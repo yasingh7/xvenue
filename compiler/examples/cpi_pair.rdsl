@@ -1,0 +1,23 @@
+// Same headline, different settlement semantics.
+contract KXCPI-26DEC-T3.0 on kalshi {
+  observe   bls.cpi_u_yoy as cpi
+  window    [2027-01-13T08:30, 2027-01-13T08:31) tz America/New_York
+  predicate cpi.value < 3.0
+  revision  first_print
+  void_if   bls.release_delayed > 14d
+  dispute   kalshi.rulebook_13_1
+}
+
+contract pm-cpi-below-3-dec on polymarket {
+  observe   bls.cpi_u_yoy as cpi
+  window    [2027-01-01T00:00, 2027-01-31T23:59) tz UTC
+  predicate cpi.value < 3.0
+  revision  latest_before(2027-01-31T23:59Z)
+  void_if   none
+  dispute   uma.optimistic_oracle_v3
+}
+
+// compiler output:
+// equiv      = UNKNOWN->FALSE  (revision: first_print vs latest_before)
+// implies    = FALSE both ways (window tz: ET vs UTC, revision divergence)
+// divergence = {revision_policy, window.tz, void_if, dispute_path}
