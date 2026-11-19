@@ -1,0 +1,39 @@
+syntax = "proto3";
+package xvenue.v0;
+
+enum Venue { VENUE_UNSPECIFIED = 0; POLYMARKET = 1; KALSHI = 2; MANIFOLD = 3; }
+enum RevisionPolicy { REV_UNSPECIFIED = 0; FIRST_PRINT = 1; LATEST_BEFORE = 2; FINAL = 3; }
+enum Relation { REL_UNKNOWN = 0; EQUIV = 1; IMPLIES = 2; DISJOINT = 3; NONE = 4; }
+
+message SourceSpan { uint32 start = 1; uint32 end = 2; }
+
+message ResolutionSpec {
+  string contract_id = 1;
+  Venue venue = 2;
+  string source = 3;
+  string metric = 4;
+  string op = 5;
+  double threshold = 6;
+  int64 window_start_utc = 7;
+  int64 window_end_utc = 8;
+  string tz = 9;
+  RevisionPolicy revision = 10;
+  repeated string void_conditions = 11;
+  string dispute_path = 12;
+  map<string, SourceSpan> grounding = 13; // field -> span in rules text
+}
+
+message PairRelation {
+  string a = 1; string b = 2;
+  Relation relation = 3;
+  repeated string divergent_fields = 4;
+  double p_divergent_settlement = 5; // from risk/
+}
+
+message Opportunity {
+  repeated Leg legs = 1;
+  double edge_bps = 2;
+  double risk_adjusted_edge_bps = 3;
+  double capital_req_usd = 4;
+}
+message Leg { string contract_id = 1; Venue venue = 2; bool buy_yes = 3; double limit_px = 4; double size = 5; }
