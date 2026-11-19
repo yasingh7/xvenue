@@ -1,0 +1,21 @@
+// Illustrative fixture, not a live contract.
+// The tight window is inside the wide one, and < 2.5 entails < 3.0,
+// so tight implies wide. A private instant outside the overlap would not.
+
+contract tight on example {
+  observe sample.series as x
+  window [2026-06-01T00:00, 2026-06-02T00:00) tz UTC
+  predicate x.value < 2.5
+  revision final
+  void_if none
+  dispute docs.example
+}
+
+contract wide on example {
+  observe sample.series as x
+  window [2026-06-01T00:00, 2026-06-04T00:00) tz UTC
+  predicate x.value < 3.0
+  revision final
+  void_if none
+  dispute docs.example
+}

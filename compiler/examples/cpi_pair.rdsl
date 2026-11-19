@@ -1,3 +1,4 @@
+// Illustrative pair, not a live Kalshi or Polymarket contract.
 // Same headline, different settlement semantics.
 contract KXCPI-26DEC-T3.0 on kalshi {
   observe   bls.cpi_u_yoy as cpi
@@ -17,7 +18,5 @@ contract pm-cpi-below-3-dec on polymarket {
   dispute   uma.optimistic_oracle_v3
 }
 
-// compiler output:
-// equiv      = UNKNOWN->FALSE  (revision: first_print vs latest_before)
-// implies    = FALSE both ways (window tz: ET vs UTC, revision divergence)
-// divergence = {revision_policy, window.tz, void_if, dispute_path}
+// xvenue relate reports: relation none.
+// Divergent fields: revision_policy, window, tz, void_if, dispute_path.
